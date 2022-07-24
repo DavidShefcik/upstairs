@@ -1,0 +1,23 @@
+# Microservices
+
+- Auth service
+  - JWT management
+- Session service
+  - Login
+    - 2fa
+  - Logout
+- Account service
+  - Register
+  - Account settings
+- Neighborhood service
+  - Get, create, join
+- Post service
+  - Comments
+  - Get, create, update posts
+- Mapbox service
+  - Mapbox API interface
+- Search service
+  - Search for neighborhoods, users, posts
+- Users service
+  - Profile, message, friends
+- Messaging service
