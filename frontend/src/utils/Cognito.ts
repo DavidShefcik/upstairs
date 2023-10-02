@@ -275,11 +275,11 @@ class CognitoService {
   }
 
   public async hydrateSession(): Promise<ExposedUserFields> {
-    const user = this._userPool.getCurrentUser();
+    // const user = this._userPool.getCurrentUser();
 
-    if (user) {
-      await user.au;
-    }
+    // if (user) {
+    // await user.au;
+    // }
 
     return this.getUserData(this._userPool.getCurrentUser());
   }
