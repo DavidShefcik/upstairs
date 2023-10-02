@@ -4,14 +4,14 @@ import * as cloudfront from "aws-cdk-lib/aws-cloudfront";
 import * as cdk from "aws-cdk-lib";
 
 export class FrontendS3 extends Construct {
-  private _s3Bucket: s3.Bucket;
-  private _cloudfrontDistribution: cloudfront.Distribution;
+  public readonly S3Bucket: s3.Bucket;
+  public readonly CloudfrontDistribution: cloudfront.Distribution;
   public CloudfrontDistributionDomain: string;
 
   constructor(scope: Construct, id: string) {
     super(scope, id);
 
-    this._s3Bucket = new s3.Bucket(this, "frontend-s3-bucket", {
+    this.S3Bucket = new s3.Bucket(this, "frontend-s3-bucket", {
       bucketName: "upstairs-frontend-bucket",
       autoDeleteObjects: true,
       removalPolicy: cdk.RemovalPolicy.DESTROY,
@@ -22,12 +22,12 @@ export class FrontendS3 extends Construct {
       "upstairs-access-identity"
     );
 
-    const s3Origin = new cdk.aws_cloudfront_origins.S3Origin(this._s3Bucket, {
+    const s3Origin = new cdk.aws_cloudfront_origins.S3Origin(this.S3Bucket, {
       originPath: "/",
       originAccessIdentity: s3OriginAccessIdentity,
     });
 
-    this._cloudfrontDistribution = new cloudfront.Distribution(
+    this.CloudfrontDistribution = new cloudfront.Distribution(
       this,
       "upstairs-frontend",
       {
@@ -54,8 +54,8 @@ export class FrontendS3 extends Construct {
       }
     );
 
-    this._s3Bucket.grantRead(s3OriginAccessIdentity);
+    this.S3Bucket.grantRead(s3OriginAccessIdentity);
 
-    this.CloudfrontDistributionDomain = this._cloudfrontDistribution.domainName;
+    this.CloudfrontDistributionDomain = this.CloudfrontDistribution.domainName;
   }
 }
