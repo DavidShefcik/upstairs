@@ -27,6 +27,7 @@ jobs:
         with:
           role-to-assume: arn:aws:iam::585984234158:role/upstairs-deployment-pipeline
           aws-region: us-east-2
+          retry-max-attempts: 10
       - name: Install Dependencies
         run: yarn install --frozen-lockfile
       - name: Build application

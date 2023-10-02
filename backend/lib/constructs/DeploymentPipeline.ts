@@ -38,7 +38,7 @@ export class DeploymentPipeline extends Construct {
         StringEquals: {
           "token.actions.githubusercontent.com:aud": "sts.amazonaws.com",
           "token.actions.githubusercontent.com:sub":
-            "repo:DavidShefcik/upstairs:ref:refs/heads/ci-config",
+            "repo:DavidShefcik/upstairs:ref:refs/heads/main",
         },
       }
     );
