@@ -29,7 +29,7 @@ export default function BrandedFloatBox({ children, boxStyles }: Props) {
         title="Upstairs"
         color="gray.50"
       >
-        Upstair
+        Upstairs
       </Text>
       <Flex
         flexDirection="column"
