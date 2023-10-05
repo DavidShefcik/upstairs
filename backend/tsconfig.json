@@ -17,8 +17,11 @@
     "inlineSources": true,
     "experimentalDecorators": true,
     "strictPropertyInitialization": false,
-    "esModuleInterop": true,
-    "typeRoots": ["./node_modules/@types"]
+    "esModuleInterop": false,
+    "typeRoots": ["./node_modules/@types"],
+    "outDir": "./dist",
+    "skipLibCheck": true,
+    "allowSyntheticDefaultImports": true
   },
   "exclude": ["node_modules", "cdk.out"]
 }

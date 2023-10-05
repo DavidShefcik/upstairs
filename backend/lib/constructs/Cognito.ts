@@ -1,5 +1,7 @@
 import { Construct } from "constructs";
 import * as cognito from "aws-cdk-lib/aws-cognito";
+import * as path from "path";
+import { TypeScriptLambdaFunction } from "../components/TypeScriptLambdaFunction";
 
 export class Cognito extends Construct {
   public userPoolId: string;
@@ -77,6 +79,21 @@ export class Cognito extends Construct {
         readAttributes: cognitoClientAttributes,
         writeAttributes: cognitoClientAttributes,
       }
+    );
+
+    const autoVerifyUserLambda = new TypeScriptLambdaFunction(
+      this,
+      "cognito-auto-verify-lambda",
+      {
+        functionName: "upstairs-cognito-auto-verify",
+        handler: "handler",
+        entry: path.join(__dirname, "../../lambdas/cognito/autoConfirmUser.ts"),
+      }
+    );
+
+    this._cognitoUserPool.addTrigger(
+      cognito.UserPoolOperation.PRE_SIGN_UP,
+      autoVerifyUserLambda
     );
 
     this.userPoolId = this._cognitoUserPool.userPoolId;
