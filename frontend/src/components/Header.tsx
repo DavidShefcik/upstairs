@@ -27,7 +27,7 @@ export default function Header() {
         fontSize="xl"
         fontWeight="bold"
         fontStyle="italic"
-        onClick={() => navigate("/")}
+        onClick={() => navigate("/feed")}
         title="Upstairs"
         color="gray.50"
       >

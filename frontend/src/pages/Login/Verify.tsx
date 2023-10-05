@@ -28,7 +28,7 @@ interface ForgotPasswordFormFields {
 export default function LoginVerify() {
   const { state } = useLocation();
   const navigate = useNavigate();
-  const continueTo = (state as LoginState)?.continueTo;
+  const from = (state as LoginState)?.from;
 
   const validate = (
     values: ForgotPasswordFormFields
@@ -48,8 +48,8 @@ export default function LoginVerify() {
   ) => {
     formikHelpers.setSubmitting(false);
 
-    if (continueTo) {
-      navigate(continueTo);
+    if (from) {
+      navigate(from);
     }
   };
 

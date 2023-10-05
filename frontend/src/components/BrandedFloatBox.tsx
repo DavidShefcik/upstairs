@@ -41,7 +41,14 @@ export default function BrandedFloatBox({ children, boxStyles }: Props) {
         gap="8"
         p="4"
       >
-        <FloatBox minH="64" minW="64" h="auto" w="auto" {...boxStyles}>
+        <FloatBox
+          minH="64"
+          minW="64"
+          h="auto"
+          w="auto"
+          maxW="99%"
+          {...boxStyles}
+        >
           {children}
         </FloatBox>
       </Flex>

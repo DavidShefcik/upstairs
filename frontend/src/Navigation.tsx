@@ -1,8 +1,8 @@
 import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 
-import HomePage from "./pages/Home";
 import MainLayout from "./pages/MainLayout";
 import UnauthenticatedLayout from "./pages/UnauthenticatedLayout";
+import HomePage from "./pages/Home";
 import LoginPage from "./pages/Login";
 import LoginVerifyPage from "./pages/Login/Verify";
 import RegisterPage from "./pages/Register";
@@ -21,27 +21,45 @@ export default function Navigation() {
   return (
     <BrowserRouter>
       <Routes>
-        {session.isLoggedIn ? (
-          <Route path="/" Component={MainLayout}>
-            <Route index Component={HomePage} />
-            <Route path="*" Component={AuthenticatedCatchPage} />
-          </Route>
-        ) : (
-          <Route path="/" Component={UnauthenticatedLayout}>
-            <Route index Component={() => <Navigate to="/login" />} />
-            <Route path="/login" Component={LoginPage} />
-            <Route path="/login/verify" Component={LoginVerifyPage} />
-            <Route path="/register" Component={RegisterPage} />
-            <Route path="/forgot-password" Component={ForgotPasswordPage} />
-            <Route
-              path="/forgot-password/change"
-              Component={ForgotPasswordChangePage}
-            />
-            <Route path="*" Component={UnauthenticatedCatchPage} />
-          </Route>
-        )}
+        <Route
+          path="/"
+          Component={session.isLoggedIn ? MainLayout : UnauthenticatedLayout}
+        >
+          <Route
+            index
+            Component={() => (
+              <Navigate to={session.isLoggedIn ? "/feed" : "/login"} />
+            )}
+          />
+        </Route>
+        <Route element={<UnauthenticatedRoute />}>
+          <Route path="/login" Component={LoginPage} />
+          <Route path="/login/verify" Component={LoginVerifyPage} />
+          <Route path="/register" Component={RegisterPage} />
+          <Route path="/forgot-password" Component={ForgotPasswordPage} />
+          <Route
+            path="/forgot-password/change"
+            Component={ForgotPasswordChangePage}
+          />
+        </Route>
+        <Route element={<AuthenticatedRoute />}>
+          <Route path="/feed" Component={HomePage} />
+        </Route>
         <Route path="/terms" Component={UnauthenticatedLayout}>
           <Route index Component={TermsPage} />
+        </Route>
+        <Route
+          path="*"
+          Component={session.isLoggedIn ? MainLayout : UnauthenticatedLayout}
+        >
+          <Route
+            path="*"
+            Component={
+              session.isLoggedIn
+                ? AuthenticatedCatchPage
+                : UnauthenticatedCatchPage
+            }
+          />
         </Route>
       </Routes>
     </BrowserRouter>

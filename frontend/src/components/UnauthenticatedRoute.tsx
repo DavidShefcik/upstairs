@@ -1,12 +1,14 @@
 import { Navigate, RouteProps } from "react-router-dom";
 import { useSession } from "../context/AuthenticationState";
+import UnauthenticatedLayout from "../pages/UnauthenticatedLayout";
 
-export default function UnauthenticatedRoute({ children }: RouteProps) {
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+export default function UnauthenticatedRoute(props: RouteProps) {
   const { session } = useSession();
 
   if (session.isLoggedIn) {
-    return <Navigate to="/" />;
+    return <Navigate to="/feed" />;
   }
 
-  return <>{children}</>;
+  return <UnauthenticatedLayout />;
 }

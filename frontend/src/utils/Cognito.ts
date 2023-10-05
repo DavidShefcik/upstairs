@@ -3,7 +3,9 @@ import {
   CognitoUserPool,
   AuthenticationDetails,
   CognitoUserAttribute,
+  CognitoUserSession,
 } from "amazon-cognito-identity-js";
+import { UnauthenticatedException } from "../exceptions/auth/UnauthenticatedException";
 
 export interface ExposedUserFields {
   userId: string;
@@ -104,6 +106,47 @@ class CognitoService {
         }
 
         resolve(userFields);
+      });
+    });
+  }
+
+  public async hydrateSession(): Promise<ExposedUserFields> {
+    const userData = this._userPool.getCurrentUser();
+
+    if (!userData) {
+      throw new UnauthenticatedException();
+    }
+
+    await this.getSession(userData);
+
+    // Behaves just like logging in
+    this._userInstance = userData;
+
+    return this.getUserData();
+  }
+
+  private async refreshSession(user: CognitoUser = this._userInstance) {
+    const session = await this.getSession(user);
+
+    await new Promise<void>((resolve, reject) => {
+      user.refreshSession(session.getRefreshToken(), (error) => {
+        if (error) {
+          reject(error);
+        }
+
+        resolve();
+      });
+    });
+  }
+
+  private async getSession(user: CognitoUser): Promise<CognitoUserSession> {
+    return new Promise<CognitoUserSession>((resolve, reject) => {
+      user.getSession((error, session) => {
+        if (error) {
+          reject(error);
+        }
+
+        resolve(session);
       });
     });
   }
@@ -272,16 +315,6 @@ class CognitoService {
         },
       });
     });
-  }
-
-  public async hydrateSession(): Promise<ExposedUserFields> {
-    // const user = this._userPool.getCurrentUser();
-
-    // if (user) {
-    // await user.au;
-    // }
-
-    return this.getUserData(this._userPool.getCurrentUser());
   }
 }
 

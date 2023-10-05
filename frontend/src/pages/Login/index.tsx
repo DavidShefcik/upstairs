@@ -1,10 +1,12 @@
 import {
   Button,
   Flex,
+  FlexProps,
   FormControl,
   FormErrorMessage,
   FormLabel,
   Text,
+  TextProps,
 } from "@chakra-ui/react";
 import {
   Field,
@@ -26,15 +28,16 @@ interface LoginFormFields {
   password: string;
 }
 export interface LoginState {
-  continueTo?: string;
   needToLogin?: boolean;
   from?: string;
 }
 
+type Variant = "warn" | "info";
+
 interface InfoBoxValues {
   title: string;
   subtitle: string;
-  variant: "warn" | "info";
+  variant: Variant;
 }
 type FromInfoBoxValues = Record<string, InfoBoxValues>;
 
@@ -85,8 +88,8 @@ export default function LoginPage() {
         navigate("/login/verify", {
           state: {
             email: values.email,
-            ...(locationState.continueTo && {
-              continueTo: locationState.continueTo,
+            ...(locationState.from && {
+              from: locationState.from,
             }),
           },
         });
@@ -140,7 +143,32 @@ export default function LoginPage() {
     return INFO_BOX_VALUES[locationState.from];
   };
 
+  const getInfoBoxColors = (
+    variant: Variant
+  ): Pick<FlexProps, "backgroundColor" | "borderColor"> & {
+    titleTextColor: string;
+    subtitleTextColor: string;
+  } => {
+    switch (variant) {
+      case "info":
+        return {
+          backgroundColor: "brand.300",
+          borderColor: "brand.600",
+          titleTextColor: "white",
+          subtitleTextColor: "gray.50",
+        };
+      case "warn":
+        return {
+          backgroundColor: "yellow.300",
+          borderColor: "yellow.400",
+          titleTextColor: "gray.400",
+          subtitleTextColor: "gray.100",
+        };
+    }
+  };
+
   const infoBoxFields = getInfoBoxFields();
+  const infoBoxColors = getInfoBoxColors(infoBoxFields.variant);
 
   return (
     <SessionPage
@@ -158,8 +186,6 @@ export default function LoginPage() {
     >
       {infoBoxFields && (
         <Flex
-          backgroundColor="brand.300"
-          borderColor="brand.600"
           borderWidth="medium"
           borderRadius="md"
           overflow="hidden"
@@ -167,16 +193,22 @@ export default function LoginPage() {
           w="80"
           flexDirection="column"
           gap="1"
+          backgroundColor={infoBoxColors.backgroundColor}
+          borderColor={infoBoxColors.borderColor}
         >
           <Text
-            color="white"
             fontWeight="bold"
             fontStyle="italic"
             fontSize="md"
+            color={infoBoxColors.titleTextColor}
           >
             {infoBoxFields.title}
           </Text>
-          <Text color="gray.50" fontSize="sm" fontWeight="semibold">
+          <Text
+            color={infoBoxColors.subtitleTextColor}
+            fontSize="sm"
+            fontWeight="semibold"
+          >
             {infoBoxFields.subtitle}
           </Text>
         </Flex>

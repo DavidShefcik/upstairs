@@ -1,23 +1,18 @@
 import { Navigate, Outlet } from "react-router-dom";
 import BrandedFloatBox from "../components/BrandedFloatBox";
 import { useSession } from "../context/AuthenticationState";
+import { ReactNode } from "react";
 
 interface Props {
-  requireUnauthenticated?: boolean;
+  children?: ReactNode;
 }
 
-export default function UnauthenticatedLayout({
-  requireUnauthenticated = true,
-}: Props) {
+export default function UnauthenticatedLayout({ children }: Props) {
   const { session } = useSession();
 
-  if (requireUnauthenticated && session.isLoggedIn) {
-    return <Navigate to="/" />;
+  if (session.isLoggedIn) {
+    return <Navigate to="/feed" />;
   }
 
-  return (
-    <BrandedFloatBox>
-      <Outlet />
-    </BrandedFloatBox>
-  );
+  return <BrandedFloatBox>{children ?? <Outlet />}</BrandedFloatBox>;
 }

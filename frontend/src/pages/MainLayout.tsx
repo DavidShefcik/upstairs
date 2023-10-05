@@ -1,12 +1,16 @@
 import { Flex } from "@chakra-ui/react";
 import { Navigate, Outlet, useLocation } from "react-router-dom";
-import { useEffect } from "react";
+import { ReactNode, useEffect } from "react";
 
 import Header from "../components/Header";
 import { useSession } from "../context/AuthenticationState";
 import { LoginState } from "./Login";
 
-export default function Layout() {
+interface Props {
+  children?: ReactNode;
+}
+
+export default function MainLayout({ children }: Props) {
   const { session } = useSession();
   const { pathname } = useLocation();
 
@@ -36,7 +40,7 @@ export default function Layout() {
     >
       <Header />
       <Flex flexGrow={1} height="auto" justifyContent="center">
-        <Outlet />
+        {children ?? <Outlet />}
       </Flex>
     </Flex>
   );

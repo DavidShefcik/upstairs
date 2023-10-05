@@ -1,12 +1,16 @@
-import { useEffect } from "react";
+import { ReactNode, useEffect } from "react";
 import { useSession } from "../context/AuthenticationState";
 
-export default function InitAuth() {
-  const { initializeSession } = useSession();
+export default function InitAuth({ children }: { children: ReactNode }) {
+  const { initializeSession, hasInitializedSession } = useSession();
 
   useEffect(() => {
     initializeSession();
   }, []);
 
-  return null;
+  if (!hasInitializedSession) {
+    return null;
+  }
+
+  return <>{children}</>;
 }

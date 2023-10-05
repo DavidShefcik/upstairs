@@ -8,8 +8,9 @@ export default function App() {
   return (
     <ChakraProvider theme={theme}>
       <GlobalProvider>
-        <InitAuth />
-        <Navigation />
+        <InitAuth>
+          <Navigation />
+        </InitAuth>
       </GlobalProvider>
     </ChakraProvider>
   );

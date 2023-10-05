@@ -35,22 +35,20 @@ export function AuthenticationStateProvider({
 }: {
   children: ReactNode;
 }) {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [user, setUser] = useState<ExposedUserFields | null>(null);
   const [hasInitializedSession, setHasInitializedSession] = useState(false);
 
   const login = (user: ExposedUserFields) => {
-    setIsLoggedIn(true);
     setUser(user);
   };
   const logout = async () => {
     try {
       await CognitoInstance.logout();
+      setUser(null);
     } catch (error) {
       console.error(error);
     }
 
-    setIsLoggedIn(false);
     setUser(null);
   };
   const initializeSession = async (): Promise<boolean> => {
@@ -58,13 +56,12 @@ export function AuthenticationStateProvider({
 
     try {
       userFields = await CognitoInstance.hydrateSession();
-
-      console.log(userFields);
-    } catch (error) {
-      console.error(error);
+      setUser(userFields);
+      setHasInitializedSession(true);
+    } catch (err) {
+      setUser(null);
+      setHasInitializedSession(true);
     }
-
-    setHasInitializedSession(true);
 
     return userFields !== undefined;
   };
@@ -75,7 +72,7 @@ export function AuthenticationStateProvider({
         login,
         logout,
         session: {
-          isLoggedIn,
+          isLoggedIn: user !== null,
           user,
         } as Session,
         hasInitializedSession,

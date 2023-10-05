@@ -1,17 +1,20 @@
-import { Navigate, Route, RouteProps } from "react-router-dom";
+import { Navigate, RouteProps, useLocation } from "react-router-dom";
 import { useSession } from "../context/AuthenticationState";
 import { LoginState } from "../pages/Login";
+import MainLayout from "../pages/MainLayout";
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 export default function AuthenticatedRoute(props: RouteProps) {
-  const { session, hasInitializedSession } = useSession();
+  const { session } = useSession();
+  const location = useLocation();
 
-  if (session.isLoggedIn) {
+  if (!session.isLoggedIn) {
     return (
       <Navigate
         to="/login"
         state={
           {
-            continueTo: props.path,
+            from: location.pathname,
             needToLogin: true,
           } as LoginState
         }
@@ -19,5 +22,5 @@ export default function AuthenticatedRoute(props: RouteProps) {
     );
   }
 
-  return <Route {...props} />;
+  return <MainLayout />;
 }
