@@ -9,7 +9,8 @@ export default function UnauthenticatedCatchPage() {
       to="/"
       state={
         {
-          continueTo: [location.pathname, location.search].join(""),
+          from: [location.pathname, location.search].join(""),
+          needToLogin: true,
         } as LoginState
       }
     />

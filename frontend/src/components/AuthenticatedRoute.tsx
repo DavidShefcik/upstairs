@@ -1,7 +1,7 @@
 import { Navigate, RouteProps, useLocation } from "react-router-dom";
 import { useSession } from "../context/AuthenticationState";
 import { LoginState } from "../pages/Login";
-import MainLayout from "../pages/MainLayout";
+import MainLayout from "../layouts/MainLayout";
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 export default function AuthenticatedRoute(props: RouteProps) {
@@ -18,6 +18,7 @@ export default function AuthenticatedRoute(props: RouteProps) {
             needToLogin: true,
           } as LoginState
         }
+        replace
       />
     );
   }

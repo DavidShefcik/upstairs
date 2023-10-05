@@ -4,7 +4,7 @@ import { ReactNode, useEffect } from "react";
 
 import Header from "../components/Header";
 import { useSession } from "../context/AuthenticationState";
-import { LoginState } from "./Login";
+import { LoginState } from "../pages/Login";
 
 interface Props {
   children?: ReactNode;
