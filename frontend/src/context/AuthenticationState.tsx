@@ -44,7 +44,6 @@ export function AuthenticationStateProvider({
   const logout = async () => {
     try {
       await CognitoInstance.logout();
-      setUser(null);
     } catch (error) {
       console.error(error);
     }

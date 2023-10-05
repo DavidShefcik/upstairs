@@ -11,13 +11,15 @@ import {
 } from "@chakra-ui/react";
 import { useContext } from "react";
 import { AuthenticationStateContext } from "../../context/AuthenticationState";
+import { useNavigate } from "react-router-dom";
 
 export default function LogoutModal(props: ReturnType<typeof useDisclosure>) {
   const { logout } = useContext(AuthenticationStateContext);
-  // TODO: Logout API call
+  const navigate = useNavigate();
 
-  const handleSubmit = () => {
-    logout();
+  const handleSubmit = async () => {
+    await logout();
+    navigate("/login");
   };
 
   return (
