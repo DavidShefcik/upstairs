@@ -123,7 +123,7 @@ export default function LoginPage() {
 
     login(userFields);
 
-    navigate("/");
+    navigate(locationState.from ?? "/feed");
   };
 
   const getInfoBoxFields = (): InfoBoxValues | null => {

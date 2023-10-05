@@ -25,10 +25,14 @@ interface ForgotPasswordFormFields {
   code: string;
 }
 
+type LocationState = LoginState & {
+  email: string;
+};
+
 export default function LoginVerify() {
-  const { state } = useLocation();
+  const location = useLocation();
   const navigate = useNavigate();
-  const from = (state as LoginState)?.from;
+  const locationState = location.state as LocationState;
 
   const validate = (
     values: ForgotPasswordFormFields
@@ -48,12 +52,10 @@ export default function LoginVerify() {
   ) => {
     formikHelpers.setSubmitting(false);
 
-    if (from) {
-      navigate(from);
-    }
+    navigate(locationState?.from ?? "/feed");
   };
 
-  if (!state?.email) {
+  if (!locationState.email) {
     return <Navigate to="/login" />;
   }
 
