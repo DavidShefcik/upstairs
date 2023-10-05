@@ -13,7 +13,7 @@ import { BiSolidBell, BiSolidBellRing } from "react-icons/bi";
 import { MdInbox } from "react-icons/md";
 import NotificationMenuItem from "./NotificationMenuItem";
 import { useNavigate } from "react-router-dom";
-import { useContext } from "react";
+import { useContext, useRef } from "react";
 import { NotificationStateContext } from "../../context/NotificationState";
 
 interface Props {
@@ -21,9 +21,19 @@ interface Props {
 }
 
 export default function NotificationMenu({ listLength }: Props) {
+  const menuListContainer = useRef<HTMLDivElement | null>();
   const navigate = useNavigate();
   const { notifications } = useContext(NotificationStateContext);
-  const disclosure = useDisclosure();
+  const disclosure = useDisclosure({
+    onClose: () => {
+      setTimeout(() => {
+        menuListContainer.current?.scroll({
+          top: 0,
+          behavior: "auto",
+        });
+      }, 200);
+    },
+  });
 
   const handleViewAllClick = () => {
     navigate("/notifications");
@@ -39,6 +49,7 @@ export default function NotificationMenu({ listLength }: Props) {
         fontSize="2xl"
       />
       <MenuList
+        ref={menuListContainer}
         mt="1"
         mr="2"
         px="2"
