@@ -6,7 +6,6 @@ import {
   FormErrorMessage,
   FormLabel,
   Text,
-  TextProps,
 } from "@chakra-ui/react";
 import {
   Field,
@@ -159,16 +158,16 @@ export default function LoginPage() {
         };
       case "warn":
         return {
-          backgroundColor: "yellow.300",
-          borderColor: "yellow.400",
-          titleTextColor: "gray.400",
-          subtitleTextColor: "gray.100",
+          backgroundColor: "red.400",
+          borderColor: "red.500",
+          titleTextColor: "black",
+          subtitleTextColor: "gray.800",
         };
     }
   };
 
   const infoBoxFields = getInfoBoxFields();
-  const infoBoxColors = getInfoBoxColors(infoBoxFields.variant);
+  const infoBoxColors = getInfoBoxColors(infoBoxFields?.variant);
 
   return (
     <SessionPage
