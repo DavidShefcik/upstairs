@@ -1,7 +1,7 @@
 import { Navigate, RouteProps, useLocation } from "react-router-dom";
 import { useSession } from "../context/AuthenticationState";
 import { LoginState } from "../pages/Login";
-import MainLayout from "../layouts/MainLayout";
+import AuthenticatedLayout from "../layouts/AuthenticatedLayout";
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 export default function AuthenticatedRoute(props: RouteProps) {
@@ -23,5 +23,5 @@ export default function AuthenticatedRoute(props: RouteProps) {
     );
   }
 
-  return <MainLayout />;
+  return <AuthenticatedLayout />;
 }

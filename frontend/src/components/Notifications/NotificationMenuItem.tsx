@@ -5,10 +5,14 @@ import { Notification } from "../../context/NotificationState";
 
 export default function NotificationMenuItem({
   notification,
+  closeMenu,
 }: {
   notification: Notification;
+  closeMenu(): void;
 }) {
-  const handleClick = () => {};
+  const handleClick = () => {
+    closeMenu();
+  };
 
   return (
     <Flex

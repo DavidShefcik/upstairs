@@ -1,6 +1,6 @@
 import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 
-import MainLayout from "./layouts/MainLayout";
+import AuthenticatedLayout from "./layouts/AuthenticatedLayout";
 import UnauthenticatedLayout from "./layouts/UnauthenticatedLayout";
 import HomePage from "./pages/Home";
 import LoginPage from "./pages/Login";
@@ -17,6 +17,8 @@ import UnauthenticatedRoute from "./components/UnauthenticatedRoute";
 import AccountSettings from "./pages/Settings/Account";
 import DeviceSettings from "./pages/Settings/Devices";
 import SettingsLayout from "./pages/Settings/SettingsLayout";
+import MainLayout from "./layouts/MainLayout";
+import NotificationsPage from "./pages/Notifications";
 
 export default function Navigation() {
   const { session } = useSession();
@@ -26,7 +28,9 @@ export default function Navigation() {
       <Routes>
         <Route
           path="/"
-          Component={session.isLoggedIn ? MainLayout : UnauthenticatedLayout}
+          Component={
+            session.isLoggedIn ? AuthenticatedLayout : UnauthenticatedLayout
+          }
         >
           <Route
             index
@@ -46,7 +50,10 @@ export default function Navigation() {
           />
         </Route>
         <Route element={<AuthenticatedRoute />}>
-          <Route path="/feed" Component={HomePage} />
+          <Route Component={MainLayout}>
+            <Route path="/feed" Component={HomePage} />
+            <Route path="/notifications" Component={NotificationsPage} />
+          </Route>
           <Route path="/settings" Component={SettingsLayout}>
             <Route
               index
@@ -61,7 +68,9 @@ export default function Navigation() {
         </Route>
         <Route
           path="*"
-          Component={session.isLoggedIn ? MainLayout : UnauthenticatedLayout}
+          Component={
+            session.isLoggedIn ? AuthenticatedLayout : UnauthenticatedLayout
+          }
         >
           <Route
             path="*"

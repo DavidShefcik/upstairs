@@ -7,6 +7,7 @@ import {
   MenuButton,
   MenuList,
   Text,
+  useDisclosure,
 } from "@chakra-ui/react";
 import { BiSolidBell, BiSolidBellRing } from "react-icons/bi";
 import { MdInbox } from "react-icons/md";
@@ -22,9 +23,15 @@ interface Props {
 export default function NotificationMenu({ listLength }: Props) {
   const navigate = useNavigate();
   const { notifications } = useContext(NotificationStateContext);
+  const disclosure = useDisclosure();
+
+  const handleViewAllClick = () => {
+    navigate("/notifications");
+    disclosure.onClose();
+  };
 
   return (
-    <Menu>
+    <Menu {...disclosure}>
       <MenuButton
         as={IconButton}
         icon={!notifications.size ? <BiSolidBell /> : <BiSolidBellRing />}
@@ -72,14 +79,12 @@ export default function NotificationMenu({ listLength }: Props) {
                 <NotificationMenuItem
                   key={notificationId}
                   notification={notification}
+                  closeMenu={disclosure.onClose}
                 />
               ))}
             {notifications.size > listLength && (
               <Flex w="full" justifyContent="center" py="2">
-                <Button
-                  variant="link"
-                  onClick={() => navigate("/notifications")}
-                >
+                <Button variant="link" onClick={handleViewAllClick}>
                   View All
                 </Button>
               </Flex>
