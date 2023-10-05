@@ -13,15 +13,10 @@ interface Props {
   width?: string;
 }
 
-export default function SessionPage({
-  title,
-  children,
-  links,
-  width = "96",
-}: Props) {
+export default function SessionPage({ title, children, links }: Props) {
   return (
     <Flex
-      w={width}
+      width="100%"
       flexDirection="column"
       justifyContent="center"
       alignItems="center"

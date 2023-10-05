@@ -1,6 +1,7 @@
 import { BoxProps, Flex, Text } from "@chakra-ui/react";
 import FloatBox from "../components/FloatBox";
 import { ReactNode, useEffect } from "react";
+import { useIsMobile } from "../hooks/useIsMobile";
 
 interface Props {
   children: ReactNode;
@@ -8,6 +9,8 @@ interface Props {
 }
 
 export default function BrandedFloatBox({ children, boxStyles }: Props) {
+  const isMobile = useIsMobile();
+
   useEffect(() => {
     document.body.style.backgroundColor = "#6122bf";
   }, []);
@@ -43,7 +46,7 @@ export default function BrandedFloatBox({ children, boxStyles }: Props) {
       >
         <FloatBox
           minH="64"
-          minW="64"
+          minW={isMobile ? "72" : "96"}
           h="auto"
           w="auto"
           maxW="99%"
