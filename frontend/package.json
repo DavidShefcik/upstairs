@@ -21,6 +21,7 @@
     "date-fns": "^2.30.0",
     "formik": "^2.4.3",
     "framer-motion": "^10.15.0",
+    "lodash.omit": "^4.5.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-icons": "^4.10.1",
@@ -28,6 +29,7 @@
     "react-transition-group": "^4.4.5"
   },
   "devDependencies": {
+    "@types/lodash.omit": "^4.5.7",
     "@types/react": "^18.2.15",
     "@types/react-dom": "^18.2.7",
     "@types/react-transition-group": "^4.4.6",

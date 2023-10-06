@@ -30,6 +30,7 @@ export default function LogoutModal(props: ReturnType<typeof useDisclosure>) {
           alignItems: "center",
         }}
         overflow="hidden"
+        mx="3"
       >
         <ModalHeader borderBottomColor="gray.100" borderBottomWidth="thin">
           <Text fontWeight="bold" fontStyle="italic">

@@ -55,7 +55,7 @@ export default function LoginVerify() {
     navigate(locationState?.from ?? "/feed");
   };
 
-  if (!locationState.email) {
+  if (!locationState?.email) {
     return <Navigate to="/login" />;
   }
 

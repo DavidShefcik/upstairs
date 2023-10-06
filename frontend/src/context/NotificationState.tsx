@@ -1,4 +1,4 @@
-import { ReactNode, createContext, useState } from "react";
+import { ReactNode, createContext, useContext, useMemo, useState } from "react";
 import { faker } from "@faker-js/faker";
 
 export enum NotificationType {
@@ -19,6 +19,7 @@ export type Notification = {
 type NotificationMap = Map<string, Notification>;
 export type INotificationStateContext = {
   notifications: NotificationMap;
+  hasUnreadNotifications: boolean;
   addNotification(notification: Notification): void;
   dismissNotification(notificationId: string): void;
 };
@@ -26,6 +27,7 @@ export type INotificationStateContext = {
 export const NotificationStateContext =
   createContext<INotificationStateContext>({
     notifications: new Map(),
+    hasUnreadNotifications: false,
     addNotification: () => {},
     dismissNotification: () => {},
   });
@@ -54,6 +56,15 @@ export function NotificationStateProvider({
       })
     )
   );
+  const hasUnreadNotifications = useMemo<boolean>(() => {
+    for (const value of notifications.values()) {
+      if (value.isNew) {
+        return true;
+      }
+    }
+
+    return false;
+  }, [notifications]);
 
   const addNotification = (notification: Notification) => {
     setNotifications((oldValue) => {
@@ -72,9 +83,16 @@ export function NotificationStateProvider({
 
   return (
     <NotificationStateContext.Provider
-      value={{ addNotification, dismissNotification, notifications }}
+      value={{
+        addNotification,
+        dismissNotification,
+        notifications,
+        hasUnreadNotifications,
+      }}
     >
       {children}
     </NotificationStateContext.Provider>
   );
 }
+
+export const useNotifications = () => useContext(NotificationStateContext);

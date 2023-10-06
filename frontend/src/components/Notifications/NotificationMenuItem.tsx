@@ -51,7 +51,7 @@ export default function NotificationMenuItem({
       </Flex>
       {notification.isNew && (
         <Box pr="2">
-          <Box backgroundColor="brand.600" w="2" h="2" borderRadius="full" />
+          <Box backgroundColor="red.400" w="2" h="2" borderRadius="full" />
         </Box>
       )}
     </Flex>

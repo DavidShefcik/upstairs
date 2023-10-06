@@ -1,3 +1,4 @@
+import { useRef } from "react";
 import {
   Button,
   Flex,
@@ -13,8 +14,7 @@ import { BiSolidBell, BiSolidBellRing } from "react-icons/bi";
 import { MdInbox } from "react-icons/md";
 import NotificationMenuItem from "./NotificationMenuItem";
 import { useNavigate } from "react-router-dom";
-import { useContext, useRef } from "react";
-import { NotificationStateContext } from "../../context/NotificationState";
+import { useNotifications } from "../../context/NotificationState";
 
 interface Props {
   listLength: number;
@@ -23,7 +23,7 @@ interface Props {
 export default function NotificationMenu({ listLength }: Props) {
   const menuListContainer = useRef<HTMLDivElement | null>();
   const navigate = useNavigate();
-  const { notifications } = useContext(NotificationStateContext);
+  const { notifications, hasUnreadNotifications } = useNotifications();
   const disclosure = useDisclosure({
     onClose: () => {
       setTimeout(() => {
@@ -31,7 +31,7 @@ export default function NotificationMenu({ listLength }: Props) {
           top: 0,
           behavior: "auto",
         });
-      }, 200);
+      }, 150);
     },
   });
 
@@ -44,7 +44,7 @@ export default function NotificationMenu({ listLength }: Props) {
     <Menu {...disclosure}>
       <MenuButton
         as={IconButton}
-        icon={!notifications.size ? <BiSolidBell /> : <BiSolidBellRing />}
+        icon={hasUnreadNotifications ? <BiSolidBellRing /> : <BiSolidBell />}
         borderRadius="full"
         fontSize="2xl"
       />
