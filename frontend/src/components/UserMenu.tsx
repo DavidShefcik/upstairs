@@ -68,15 +68,17 @@ export default function UserMenu() {
           >
             Profile
           </MenuItem>
-          <MenuItem
-            py="2"
-            fontWeight="medium"
-            as={Link}
-            title="Settings"
-            to="/settings"
-          >
-            Settings
-          </MenuItem>
+          {session.user.neighborhoodId && (
+            <MenuItem
+              py="2"
+              fontWeight="medium"
+              as={Link}
+              title="Settings"
+              to="/settings"
+            >
+              Settings
+            </MenuItem>
+          )}
           <MenuDivider />
           <MenuItem
             color="red.500"
