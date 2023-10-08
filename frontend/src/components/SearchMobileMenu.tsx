@@ -7,47 +7,24 @@ import {
   Flex,
   UseDisclosureReturn,
 } from "@chakra-ui/react";
-import { FormEvent, useEffect, useState } from "react";
-import { Location, useLocation, useNavigate } from "react-router-dom";
+import { FormEvent } from "react";
 import Input from "./Input";
-
-const extractSearchQuery = (location: Location): string => {
-  if (location.pathname !== "/search" || !location.search) {
-    return "";
-  }
-
-  const searchParams = new URLSearchParams(location.search);
-  const query = searchParams.get("query");
-
-  if (!query) {
-    return "";
-  }
-
-  return query;
-};
+import useSearch from "../hooks/useSearch";
 
 export default function SearchMobileMenu(props: UseDisclosureReturn) {
-  const location = useLocation();
-  const [query, setQuery] = useState(extractSearchQuery(location));
-  const navigate = useNavigate();
-
-  useEffect(() => {
-    setQuery(extractSearchQuery(location));
-  }, [location]);
+  const { query, setQuery, submitQuery } = useSearch();
 
   const handleClose = () => {
-    setQuery(extractSearchQuery(location));
     props.onClose();
   };
   const handleSubmit = (event: FormEvent) => {
     event.preventDefault();
 
-    if (!query.trim()) {
-      return;
-    }
+    const success = submitQuery();
 
-    navigate(`/search?query=${query}`);
-    props.onClose();
+    if (success) {
+      props.onClose();
+    }
   };
 
   const isInputDisabled = query.trim().length === 0;
@@ -77,10 +54,10 @@ export default function SearchMobileMenu(props: UseDisclosureReturn) {
               px="2"
               fontSize="sm"
               borderColor="brand.600"
+              type="search"
             />
             <Button
               type="submit"
-              onClick={handleSubmit}
               borderLeftRadius="none"
               aria-disabled={isInputDisabled}
               isDisabled={isInputDisabled}

@@ -17,7 +17,7 @@ export default function AuthenticatedCatchPage() {
         Not Found!
       </Text>
       <Text>The requested page was not found</Text>
-      <Button colorScheme="brand" onClick={() => navigate("/")}>
+      <Button colorScheme="brand" onClick={() => navigate("/feed")}>
         Back to Safety
       </Button>
     </Flex>

@@ -7,6 +7,7 @@ import { useIsMobile } from "../hooks/useIsMobile";
 import MobileMenu from "./MobileMenu";
 import SearchMobileMenu from "./SearchMobileMenu";
 import { useSession } from "../context/AuthenticationState";
+import SearchInput from "./SearchInput";
 
 export default function Header() {
   const navigate = useNavigate();
@@ -68,6 +69,7 @@ export default function Header() {
             Upstairs
           </Text>
         </Flex>
+        {!isMobile && isSearchAvailable && <SearchInput />}
         <Flex gap="3" flexDirection="row" alignItems="center">
           {isMobile && isSearchAvailable ? (
             <IconButton
@@ -87,8 +89,8 @@ export default function Header() {
           ) : null}
         </Flex>
       </Flex>
-      <MobileMenu {...mobileMenuDisclosure} />
-      {isSearchAvailable && (
+      {isMobile && <MobileMenu {...mobileMenuDisclosure} />}
+      {isMobile && isSearchAvailable && (
         <SearchMobileMenu {...searchMobileMenuDisclosure} />
       )}
     </>
