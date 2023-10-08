@@ -9,13 +9,15 @@ import { useMemo } from "react";
 import { useNotifications } from "../context/NotificationState";
 import MenuDivider from "../components/LinkMenu/LinkMenuDivider";
 import Footer from "../components/Footer";
+import { useSession } from "../context/AuthenticationState";
 
 function MainLinks() {
+  const { session } = useSession();
   const { hasUnreadNotifications } = useNotifications();
 
   const links = useMemo<ILinkMenuItem[]>(() => {
     return [
-      {
+      session.user.neighborhoodId && {
         title: "Home",
         path: "/feed",
         icon: AiFillHome,
@@ -27,12 +29,14 @@ function MainLinks() {
         showBadge: hasUnreadNotifications,
       },
       {
-        title: "My Neighborhood",
+        title: session.user.neighborhoodId
+          ? "My Neighborhood"
+          : "Join a Neighborhood",
         path: "/neighborhood",
         icon: HiBuildingStorefront,
       },
-    ];
-  }, [hasUnreadNotifications]);
+    ].filter(Boolean);
+  }, [hasUnreadNotifications, session]);
 
   return <LinkMenu items={links} />;
 }
