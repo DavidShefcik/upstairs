@@ -20,7 +20,7 @@ const extractSearchQuery = (location: Location) => {
     return "";
   }
 
-  return decodeURIComponent(query);
+  return decodeURIComponent(query.trim());
 };
 
 export default function useSearch(): ReturnType {

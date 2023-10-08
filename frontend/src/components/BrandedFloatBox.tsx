@@ -31,6 +31,7 @@ export default function BrandedFloatBox({ children, boxStyles }: Props) {
         fontStyle="italic"
         title="Upstairs"
         color="gray.50"
+        height="16"
       >
         Upstairs
       </Text>
