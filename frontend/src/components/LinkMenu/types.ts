@@ -5,6 +5,7 @@ export interface ILinkMenuLink {
   icon: IconType;
   path: string;
   type?: "link";
+  showBadge?: boolean;
 }
 interface ILinkMenuDivider {
   type: "divider";

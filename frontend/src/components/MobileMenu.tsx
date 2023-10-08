@@ -101,12 +101,19 @@ export default function MobileMenu(props: UseDisclosureReturn) {
               </Text>
             </Box>
             <Divider />
-            <LinkButton
-              text="Notifications"
-              path="/notifications"
-              showBadge={hasUnreadNotifications}
-            />
-            <LinkButton text="Profile" path="/profile" />
+            {session.user.neighborhoodId ? (
+              <>
+                <LinkButton
+                  text="Notifications"
+                  path="/notifications"
+                  showBadge={hasUnreadNotifications}
+                />
+                <LinkButton text="My Neighborhood" path="/neighborhood" />
+                <LinkButton text="Profile" path="/profile" />
+              </>
+            ) : (
+              <LinkButton text="Join a Neighborhood" path="/neighborhood" />
+            )}
             <LinkButton text="Settings" path="/settings" />
             <Divider />
             <Button

@@ -63,7 +63,12 @@ export default function Navigation() {
             <Route path="devices" Component={DeviceSettings} />
           </Route>
         </Route>
-        <Route path="/terms" Component={UnauthenticatedLayout}>
+        <Route
+          path="/terms"
+          Component={() => (
+            <UnauthenticatedLayout requireAuthentication={false} />
+          )}
+        >
           <Route index Component={TermsPage} />
         </Route>
         <Route

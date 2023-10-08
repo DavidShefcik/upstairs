@@ -4,13 +4,17 @@ import { useSession } from "../context/AuthenticationState";
 import { ReactNode } from "react";
 
 interface Props {
+  requireAuthentication?: boolean;
   children?: ReactNode;
 }
 
-export default function UnauthenticatedLayout({ children }: Props) {
+export default function UnauthenticatedLayout({
+  requireAuthentication = true,
+  children,
+}: Props) {
   const { session } = useSession();
 
-  if (session.isLoggedIn) {
+  if (requireAuthentication && session.isLoggedIn) {
     return <Navigate to="/feed" />;
   }
 

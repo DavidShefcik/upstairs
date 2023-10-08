@@ -1,9 +1,9 @@
 import { Link, useLocation } from "react-router-dom";
 import { ILinkMenuItem, ILinkMenuLink } from "./types";
-import { Button, Flex, Icon, MenuDivider, Text } from "@chakra-ui/react";
+import { Box, Button, Flex, Icon, MenuDivider, Text } from "@chakra-ui/react";
 
 function MenuLink({
-  item: { path, icon: IconComponent, title },
+  item: { path, icon: IconComponent, title, showBadge },
   isActive,
 }: {
   item: ILinkMenuLink;
@@ -20,6 +20,8 @@ function MenuLink({
       variant="ghost"
       display="flex"
       flexDirection="row"
+      justifyContent="flex-start"
+      alignItems="center"
       gap="4"
       backgroundColor="rgba(97, 34, 191, 0.1)"
       rounded="full"
@@ -45,9 +47,20 @@ function MenuLink({
         fontStyle={isActive ? "italic" : "normal"}
         fontWeight="bold"
         transition="color 100ms ease-in-out"
+        flexGrow="1"
       >
         {title}
       </Text>
+      <Box w="1" px="2">
+        <Box
+          backgroundColor="red.500"
+          w="2"
+          h="2"
+          borderRadius="full"
+          transform={`scale(${showBadge && !isActive ? "1" : "0"})`}
+          transition="all 150ms ease-in-out"
+        />
+      </Box>
     </Button>
   );
 }
