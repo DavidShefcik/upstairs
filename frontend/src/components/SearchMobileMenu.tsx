@@ -33,43 +33,43 @@ export default function SearchMobileMenu(props: UseDisclosureReturn) {
     <Drawer {...props} placement="top">
       <DrawerOverlay />
       <DrawerContent h="16" backgroundColor="gray.50">
-        <form style={{ height: "100%", width: "100%" }} onSubmit={handleSubmit}>
-          <Flex
-            w="full"
-            h="full"
-            flexDirection="row"
-            justifyContent="center"
-            alignItems="center"
-            px="6"
+        <Flex
+          as="form"
+          onSubmit={handleSubmit}
+          w="full"
+          h="full"
+          flexDirection="row"
+          justifyContent="center"
+          alignItems="center"
+          px="6"
+        >
+          <Button onClick={handleClose} borderRightRadius="none">
+            <CloseIcon />
+          </Button>
+          <Input
+            value={query}
+            onChange={(event) => setQuery(event.target.value)}
+            placeholder="Search..."
+            autoFocus
+            borderRadius="none"
+            px="2"
+            fontSize="sm"
+            borderColor="brand.600"
+            type="search"
+          />
+          <Button
+            type="submit"
+            borderLeftRadius="none"
+            aria-disabled={isInputDisabled}
+            isDisabled={isInputDisabled}
+            // disabled={isInputDisabled}
+            _disabled={{
+              opacity: "0.6",
+            }}
           >
-            <Button onClick={handleClose} borderRightRadius="none">
-              <CloseIcon />
-            </Button>
-            <Input
-              value={query}
-              onChange={(event) => setQuery(event.target.value)}
-              placeholder="Search..."
-              autoFocus
-              borderRadius="none"
-              px="2"
-              fontSize="sm"
-              borderColor="brand.600"
-              type="search"
-            />
-            <Button
-              type="submit"
-              borderLeftRadius="none"
-              aria-disabled={isInputDisabled}
-              isDisabled={isInputDisabled}
-              // disabled={isInputDisabled}
-              _disabled={{
-                opacity: "0.6",
-              }}
-            >
-              <Search2Icon />
-            </Button>
-          </Flex>
-        </form>
+            <Search2Icon />
+          </Button>
+        </Flex>
       </DrawerContent>
     </Drawer>
   );
