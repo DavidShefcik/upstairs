@@ -5,6 +5,7 @@ interface ReturnType {
   query: string;
   setQuery(value: string): void;
   submitQuery(): boolean;
+  urlValue: string;
 }
 
 const extractSearchQuery = (location: Location) => {
@@ -19,7 +20,7 @@ const extractSearchQuery = (location: Location) => {
     return "";
   }
 
-  return query;
+  return decodeURIComponent(query);
 };
 
 export default function useSearch(): ReturnType {
@@ -27,9 +28,13 @@ export default function useSearch(): ReturnType {
   const navigate = useNavigate();
 
   const [query, setQuery] = useState(extractSearchQuery(location));
+  const [urlValue, setUrlValue] = useState<string | null>(
+    extractSearchQuery(location) || null
+  );
 
   useEffect(() => {
     setQuery(extractSearchQuery(location));
+    setUrlValue(extractSearchQuery(location));
   }, [location]);
 
   const submitQuery = (): boolean => {
@@ -37,7 +42,7 @@ export default function useSearch(): ReturnType {
       return false;
     }
 
-    navigate(`/search?query=${query}`);
+    navigate(`/search?query=${encodeURIComponent(query.trim())}`);
 
     return true;
   };
@@ -46,5 +51,6 @@ export default function useSearch(): ReturnType {
     query,
     setQuery,
     submitQuery,
+    urlValue,
   };
 }
