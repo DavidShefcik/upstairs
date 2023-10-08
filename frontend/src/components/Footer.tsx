@@ -1,3 +1,4 @@
+import React from "react";
 import { Button, Flex, Text, Icon, Box } from "@chakra-ui/react";
 import { useNavigate } from "react-router-dom";
 import { HiExternalLink } from "react-icons/hi";
@@ -74,10 +75,10 @@ export default function Footer() {
       justifyContent="center"
     >
       {LINKS.map((link, index) => (
-        <>
-          <FooterLink key={link.path} item={link} />
+        <React.Fragment key={link.path}>
+          <FooterLink item={link} />
           {index !== LINKS.length - 1 && <LinkDivider />}
-        </>
+        </React.Fragment>
       ))}
     </Flex>
   );
