@@ -6,16 +6,6 @@ export default function MobileLinkMenu({ items }: { items: ILinkMenuItem[] }) {
   const location = useLocation();
   const navigate = useNavigate();
 
-  console.log(
-    items.map((item) =>
-      item.type === "divider" ? null : (
-        <option key={item.path} value={item.path}>
-          {item.title}
-        </option>
-      )
-    )
-  );
-
   return (
     <Select
       value={location.pathname}

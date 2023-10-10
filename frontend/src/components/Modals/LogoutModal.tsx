@@ -9,16 +9,23 @@ import {
   useDisclosure,
   Text,
 } from "@chakra-ui/react";
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { AuthenticationStateContext } from "../../context/AuthenticationState";
 import { useNavigate } from "react-router-dom";
 
 export default function LogoutModal(props: ReturnType<typeof useDisclosure>) {
   const { logout } = useContext(AuthenticationStateContext);
   const navigate = useNavigate();
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleSubmit = async () => {
-    await logout();
+    setIsLoading(true);
+
+    try {
+      await logout();
+    } catch {
+      setIsLoading(false);
+    }
     navigate("/login");
   };
 
@@ -48,7 +55,11 @@ export default function LogoutModal(props: ReturnType<typeof useDisclosure>) {
           <Button variant="link" color="gray.800" onClick={props.onClose}>
             Cancel
           </Button>
-          <Button colorScheme="red" onClick={handleSubmit}>
+          <Button
+            colorScheme="red"
+            onClick={handleSubmit}
+            isLoading={isLoading}
+          >
             Logout
           </Button>
         </ModalFooter>
