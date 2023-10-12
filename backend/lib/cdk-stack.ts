@@ -34,5 +34,8 @@ export class CdkStack extends cdk.Stack {
     new cdk.CfnOutput(this, "PipelineRoleARN", {
       value: pipelineRoleARN,
     });
+    new cdk.CfnOutput(this, "CloudFrontId", {
+      value: frontend.CloudfrontDistribution.distributionId,
+    });
   }
 }

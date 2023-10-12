@@ -53,10 +53,14 @@ export class DeploymentPipeline extends Construct {
       resources: [props.frontendS3Bucket.arnForObjects("*")],
       actions: ["s3:PutObject"],
     });
+
     // this._backendDeploymentPipelinePolicy = new iam.PolicyStatement({
     //   sid: "AllowBackendDeployment",
     // });
 
+    props.frontendCloudfrontDistribution.grantCreateInvalidation(
+      this._pipelineRole
+    );
     this._pipelineRole.addToPolicy(this._frontendDeploymentPipelinePolicy);
     // this._pipelineRole.addToPolicy(this._backendDeploymentPipelinePolicy);
 

@@ -37,3 +37,5 @@ jobs:
           VITE_AWS_COGNITO_CLIENT_ID: ${{ secrets.AWS_COGNITO_CLIENT_ID }}
       - name: Deploy application to S3
         run: aws s3 cp --recursive ./dist/ s3://upstairs-frontend-bucket/
+      - name: Invalidate CloudFront cache
+        run: aws cloudfront create-invalidation --distribution-id EPQQNBDD2VAQ0 --paths "/*"
