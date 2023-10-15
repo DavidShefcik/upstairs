@@ -16,6 +16,7 @@ export default function Select(props: SelectProps) {
         ...props._hover,
         borderColor: "gray.400",
       }}
+      backgroundColor="white"
       borderColor="gray.300"
       outline="none"
       {...omit(props, ["_focus", "_hover"])}
