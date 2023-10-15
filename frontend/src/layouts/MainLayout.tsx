@@ -1,15 +1,17 @@
-import { Box, Flex } from "@chakra-ui/react";
+import { useMemo } from "react";
 import { Outlet } from "react-router-dom";
+import { Box, Flex } from "@chakra-ui/react";
 import { AiFillHome } from "react-icons/ai";
+import { HiBuildingStorefront } from "react-icons/hi2";
+import { BiSolidBell, BiSolidBellRing } from "react-icons/bi";
+
 import LinkMenu from "../components/LinkMenu";
 import { ILinkMenuItem } from "../components/LinkMenu/types";
-import { BiSolidBell, BiSolidBellRing } from "react-icons/bi";
-import { HiBuildingStorefront } from "react-icons/hi2";
-import { useMemo } from "react";
 import { useNotifications } from "../context/NotificationState";
 import MenuDivider from "../components/LinkMenu/LinkMenuDivider";
 import Footer from "../components/Footer";
 import { useSession } from "../context/AuthenticationState";
+import { useIsMobile } from "../hooks/useIsMobile";
 
 function MainLinks() {
   const { session } = useSession();
@@ -42,9 +44,32 @@ function MainLinks() {
 }
 
 export default function MainLayout() {
+  const isMobile = useIsMobile();
+
+  if (isMobile) {
+    return (
+      <Flex w="full" flexDirection="column" px="6" py="4">
+        <MainLinks />
+        <Box flexGrow="1" pb="2" pt="4">
+          <Outlet />
+        </Box>
+        <Flex
+          w="full"
+          flexDirection="column"
+          justifyContent="center"
+          alignItems="center"
+          gap="2"
+        >
+          <MenuDivider />
+          <Footer />
+        </Flex>
+      </Flex>
+    );
+  }
+
   return (
     <Flex w="full" flexDirection="row" mx="32" py="4" gap="6">
-      <Flex gap="2" flexDirection="column">
+      <Flex gap="2" flexDirection="column" position="sticky" top="0" left="0">
         <MainLinks />
         <MenuDivider />
         <Footer />

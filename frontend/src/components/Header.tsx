@@ -38,6 +38,11 @@ export default function Header() {
         justifyContent="space-between"
         flexDir="row"
         px="4"
+        minHeight="64px"
+        position="sticky"
+        top="0"
+        left="0"
+        zIndex="sticky"
       >
         <Flex
           h="full"

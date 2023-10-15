@@ -2,7 +2,7 @@ import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 
 import AuthenticatedLayout from "./layouts/AuthenticatedLayout";
 import UnauthenticatedLayout from "./layouts/UnauthenticatedLayout";
-import HomePage from "./pages/Home";
+import FeedPage from "./pages/Feed";
 import LoginPage from "./pages/Login";
 import LoginVerifyPage from "./pages/Login/Verify";
 import RegisterPage from "./pages/Register";
@@ -51,7 +51,7 @@ export default function Navigation() {
         </Route>
         <Route element={<AuthenticatedRoute />}>
           <Route Component={MainLayout}>
-            <Route path="/feed" Component={HomePage} />
+            <Route path="/feed" Component={FeedPage} />
             <Route path="/notifications" Component={NotificationsPage} />
           </Route>
           <Route path="/settings" Component={SettingsLayout}>
