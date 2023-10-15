@@ -7,6 +7,20 @@ interface IFooterLink {
   text: string;
   path: string;
   isExternal?: boolean;
+  color?: string;
+}
+
+interface FooterProps {
+  textColor?: string;
+  dividerColor?: string;
+}
+interface FooterLinkProps {
+  item: IFooterLink;
+  color?: string;
+}
+
+interface FooterDividerProps {
+  color?: string;
 }
 
 const LINKS: IFooterLink[] = [
@@ -26,15 +40,14 @@ const LINKS: IFooterLink[] = [
   },
 ];
 
-function LinkDivider() {
-  return <Box h="100%" w="1px" backgroundColor="gray.300" />;
+function LinkDivider({ color = "gray.300" }: FooterDividerProps) {
+  return <Box h="100%" w="1px" backgroundColor={color} />;
 }
 
 function FooterLink({
   item: { text, path, isExternal },
-}: {
-  item: IFooterLink;
-}) {
+  color = "gray.800",
+}: FooterLinkProps) {
   const navigate = useNavigate();
 
   const handleClick = () => {
@@ -57,15 +70,15 @@ function FooterLink({
       flexDirection="row"
       gap="1"
     >
-      <Text color="gray.800" fontSize="sm">
+      <Text color={color} fontSize="sm">
         {text}
       </Text>
-      {isExternal && <Icon color="gray.800" as={HiExternalLink} w="3" h="3" />}
+      {isExternal && <Icon color={color} as={HiExternalLink} w="3" h="3" />}
     </Button>
   );
 }
 
-export default function Footer() {
+export default function Footer({ textColor, dividerColor }: FooterProps) {
   return (
     <Flex
       width="100%"
@@ -76,8 +89,8 @@ export default function Footer() {
     >
       {LINKS.map((link, index) => (
         <React.Fragment key={link.path}>
-          <FooterLink item={link} />
-          {index !== LINKS.length - 1 && <LinkDivider />}
+          <FooterLink item={link} color={textColor} />
+          {index !== LINKS.length - 1 && <LinkDivider color={dividerColor} />}
         </React.Fragment>
       ))}
     </Flex>

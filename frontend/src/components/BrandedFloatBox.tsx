@@ -2,6 +2,7 @@ import { BoxProps, Flex, Text } from "@chakra-ui/react";
 import FloatBox from "../components/FloatBox";
 import { ReactNode, useEffect } from "react";
 import { useIsMobile } from "../hooks/useIsMobile";
+import Footer from "./Footer";
 
 interface Props {
   children: ReactNode;
@@ -55,6 +56,9 @@ export default function BrandedFloatBox({ children, boxStyles }: Props) {
         >
           {children}
         </FloatBox>
+      </Flex>
+      <Flex w="full" py="3" justifyContent="center" alignItems="center">
+        <Footer textColor="gray.50" dividerColor="transparent" />
       </Flex>
     </Flex>
   );
