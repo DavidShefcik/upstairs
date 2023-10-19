@@ -11,7 +11,7 @@ import { useNotifications } from "../context/NotificationState";
 import MenuDivider from "../components/LinkMenu/LinkMenuDivider";
 import Footer from "../components/Footer";
 import { useSession } from "../context/AuthenticationState";
-import { useIsMobile } from "../hooks/useIsMobile";
+import { useDeviceSize } from "../hooks/useDeviceSize";
 
 function MainLinks() {
   const { session } = useSession();
@@ -44,7 +44,7 @@ function MainLinks() {
 }
 
 export default function MainLayout() {
-  const isMobile = useIsMobile();
+  const { isMobile } = useDeviceSize();
 
   if (isMobile) {
     return (

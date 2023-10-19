@@ -62,7 +62,6 @@ export default function SearchMobileMenu(props: UseDisclosureReturn) {
             borderLeftRadius="none"
             aria-disabled={isInputDisabled}
             isDisabled={isInputDisabled}
-            // disabled={isInputDisabled}
             _disabled={{
               opacity: "0.6",
             }}

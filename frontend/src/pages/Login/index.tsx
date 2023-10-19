@@ -21,6 +21,7 @@ import SessionPage from "../../components/SessionPage";
 import { useLocation, useNavigate } from "react-router-dom";
 import { CognitoInstance, ExposedUserFields } from "../../utils/Cognito";
 import { useSession } from "../../context/AuthenticationState";
+import { useDeviceSize } from "../../hooks/useDeviceSize";
 
 interface LoginFormFields {
   email: string;
@@ -56,6 +57,7 @@ const INFO_BOX_VALUES: FromInfoBoxValues = {
 export default function LoginPage() {
   const navigate = useNavigate();
   const location = useLocation();
+  const { isMobile } = useDeviceSize();
   const { login } = useSession();
   const locationState = location.state as LoginState;
 
@@ -189,7 +191,7 @@ export default function LoginPage() {
           borderRadius="md"
           overflow="hidden"
           p="2"
-          w="80"
+          w={isMobile ? "64" : "80"}
           flexDirection="column"
           gap="1"
           backgroundColor={infoBoxColors.backgroundColor}
@@ -243,7 +245,12 @@ export default function LoginPage() {
                 {({ field, form }: FieldProps<string, LoginFormFields>) => (
                   <FormControl isInvalid={!!form.errors.password}>
                     <FormLabel>Password</FormLabel>
-                    <Input {...field} type="password" maxLength={1024} />
+                    <Input
+                      {...field}
+                      type="password"
+                      maxLength={1024}
+                      autoComplete="current-password"
+                    />
                     <FormErrorMessage>{form.errors.password}</FormErrorMessage>
                   </FormControl>
                 )}

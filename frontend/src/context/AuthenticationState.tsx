@@ -1,5 +1,6 @@
 import { ReactNode, createContext, useContext, useState } from "react";
 import { CognitoInstance, ExposedUserFields } from "../utils/Cognito";
+import { UnauthenticatedException } from "../exceptions/auth/UnauthenticatedException";
 
 type AuthenticatedState = {
   isLoggedIn: true;
@@ -13,6 +14,7 @@ type Session = AuthenticatedState | UnauthenticatedState;
 export interface IAuthenticationStateContext {
   login(user: ExposedUserFields): void;
   logout(): Promise<void>;
+  updateUser(user: Partial<ExposedUserFields>): void;
   initializeSession(): Promise<boolean>;
   hasInitializedSession: boolean;
   session: Session;
@@ -22,6 +24,7 @@ export const AuthenticationStateContext =
   createContext<IAuthenticationStateContext>({
     login: () => {},
     logout: async () => {},
+    updateUser: () => {},
     initializeSession: async () => false,
     hasInitializedSession: false,
     session: {
@@ -64,12 +67,23 @@ export function AuthenticationStateProvider({
 
     return userFields !== undefined;
   };
+  const updateUser = (newValues: Partial<ExposedUserFields>) => {
+    if (!user) {
+      throw new UnauthenticatedException();
+    }
+
+    setUser((existingUser) => ({
+      ...existingUser,
+      ...newValues,
+    }));
+  };
 
   return (
     <AuthenticationStateContext.Provider
       value={{
         login,
         logout,
+        updateUser,
         session: {
           isLoggedIn: user !== null,
           user,

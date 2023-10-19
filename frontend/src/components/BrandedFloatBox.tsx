@@ -1,7 +1,7 @@
 import { BoxProps, Flex, Text } from "@chakra-ui/react";
 import FloatBox from "../components/FloatBox";
 import { ReactNode, useEffect } from "react";
-import { useIsMobile } from "../hooks/useIsMobile";
+import { useDeviceSize } from "../hooks/useDeviceSize";
 import Footer from "./Footer";
 
 interface Props {
@@ -10,7 +10,7 @@ interface Props {
 }
 
 export default function BrandedFloatBox({ children, boxStyles }: Props) {
-  const isMobile = useIsMobile();
+  const { isMobile } = useDeviceSize();
 
   useEffect(() => {
     document.body.style.backgroundColor = "#6122bf";

@@ -4,6 +4,7 @@ import {
   AuthenticationDetails,
   CognitoUserAttribute,
   CognitoUserSession,
+  ICognitoUserAttributeData,
 } from "amazon-cognito-identity-js";
 import { UnauthenticatedException } from "../exceptions/auth/UnauthenticatedException";
 
@@ -15,6 +16,9 @@ export interface ExposedUserFields {
   neighborhoodId: string | null;
   mfaEnabled: boolean;
 }
+type MutableUserFields = Partial<
+  Pick<ExposedUserFields, "firstName" | "lastName" | "email" | "neighborhoodId">
+>;
 
 export enum UserAttributes {
   ID = "sub",
@@ -127,20 +131,6 @@ class CognitoService {
     this._userInstance = userData;
 
     return this.getUserData();
-  }
-
-  private async refreshSession(user: CognitoUser = this._userInstance) {
-    const session = await this.getSession(user);
-
-    await new Promise<void>((resolve, reject) => {
-      user.refreshSession(session.getRefreshToken(), (error) => {
-        if (error) {
-          reject(error);
-        }
-
-        resolve();
-      });
-    });
   }
 
   private async getSession(user: CognitoUser): Promise<CognitoUserSession> {
@@ -318,6 +308,74 @@ class CognitoService {
           reject(error);
         },
       });
+    });
+  }
+
+  public async changePassword({
+    currentPassword,
+    newPassword,
+  }: {
+    currentPassword: string;
+    newPassword: string;
+  }): Promise<void> {
+    return new Promise<void>((resolve, reject) => {
+      this._userInstance.changePassword(
+        currentPassword,
+        newPassword,
+        (error) => {
+          if (error) {
+            reject(error);
+          }
+
+          resolve();
+        }
+      );
+    });
+  }
+
+  public async updateAttributes(
+    values: MutableUserFields
+  ): Promise<MutableUserFields> {
+    const updatedUserFields: ICognitoUserAttributeData[] = [];
+
+    if (values.email) {
+      updatedUserFields.push({
+        Name: UserAttributes.Email,
+        Value: values.email,
+      });
+    }
+    if (values.firstName) {
+      updatedUserFields.push({
+        Name: UserAttributes.FirstName,
+        Value: values.firstName,
+      });
+    }
+    if (values.lastName) {
+      updatedUserFields.push({
+        Name: UserAttributes.LastName,
+        Value: values.lastName,
+      });
+    }
+    if (values.neighborhoodId) {
+      updatedUserFields.push({
+        Name: UserAttributes.NeighborhoodID,
+        Value: values.neighborhoodId,
+      });
+    }
+
+    return new Promise<MutableUserFields>((resolve, reject) => {
+      this._userInstance.updateAttributes(
+        updatedUserFields,
+        (error, result) => {
+          if (error) {
+            reject(error);
+          }
+
+          console.log("update", { result });
+
+          resolve(values);
+        }
+      );
     });
   }
 }

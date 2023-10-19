@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { HamburgerIcon, Search2Icon } from "@chakra-ui/icons";
 import UserMenu from "./UserMenu";
 import NotificationMenu from "./Notifications/NotificationMenu";
-import { useIsMobile } from "../hooks/useIsMobile";
+import { useDeviceSize } from "../hooks/useDeviceSize";
 import MobileMenu from "./MobileMenu";
 import SearchMobileMenu from "./SearchMobileMenu";
 import { useSession } from "../context/AuthenticationState";
@@ -11,7 +11,7 @@ import SearchInput from "./SearchInput";
 
 export default function Header() {
   const navigate = useNavigate();
-  const isMobile = useIsMobile();
+  const { isMobile } = useDeviceSize();
   const mobileMenuDisclosure = useDisclosure();
   const searchMobileMenuDisclosure = useDisclosure();
   const { session } = useSession();
