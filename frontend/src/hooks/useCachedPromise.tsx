@@ -50,10 +50,20 @@ export default function useCachedPromise<R, V = undefined>(
     })();
   }, []);
 
+  const updateValue = (newValue: R) => {
+    try {
+      const stringifiedNewValue = JSON.stringify(newValue);
+      cache.set(cacheKey, stringifiedNewValue);
+      setData(newValue);
+    } catch (err) {
+      setError(err);
+    }
+  };
+
   return {
     isLoading,
     error,
     data,
-    updateValue: setData,
+    updateValue,
   };
 }
