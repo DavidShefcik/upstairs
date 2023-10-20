@@ -19,6 +19,7 @@ export default function PinInputField({
       _hover={{
         borderColor: hasError ? "red.500" : "gray.300",
       }}
+      w="12"
     />
   );
 }
