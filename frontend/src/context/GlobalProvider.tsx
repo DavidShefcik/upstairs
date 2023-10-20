@@ -1,11 +1,14 @@
 import { ReactNode } from "react";
 import { AuthenticationStateProvider } from "./AuthenticationState";
 import { NotificationStateProvider } from "./NotificationState";
+import { PromiseResultCacheProvider } from "./PromiseResultCache";
 
 export default function GlobalProvider({ children }: { children: ReactNode }) {
   return (
-    <AuthenticationStateProvider>
-      <NotificationStateProvider>{children}</NotificationStateProvider>
-    </AuthenticationStateProvider>
+    <PromiseResultCacheProvider>
+      <AuthenticationStateProvider>
+        <NotificationStateProvider>{children}</NotificationStateProvider>
+      </AuthenticationStateProvider>
+    </PromiseResultCacheProvider>
   );
 }

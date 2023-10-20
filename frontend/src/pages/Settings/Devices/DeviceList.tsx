@@ -1,56 +1,46 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Flex, Spinner, Text, useDisclosure } from "@chakra-ui/react";
 import { WarningIcon } from "@chakra-ui/icons";
 
 import { CognitoInstance, DeviceSession } from "../../../utils/Cognito";
 import DeviceItem from "./DeviceItem";
 import RemoveDeviceModal from "../../../components/Modals/RemoveDeviceModal";
+import useCachedPromise from "../../../hooks/useCachedPromise";
+
+const fetchDevices = async () => {
+  const result = await CognitoInstance.getSessions();
+
+  const sortedResult = result.sort(
+    (
+      { isCurrentSession: aIsCurrentSession },
+      { isCurrentSession: bIsCurrentSession }
+    ) => (aIsCurrentSession && !bIsCurrentSession ? -1 : 1)
+  );
+
+  return sortedResult;
+};
 
 export default function DeviceList() {
-  const [isFetchLoading, setIsFetchLoading] = useState(true);
-  const [devices, setDevices] = useState<DeviceSession[]>([]);
+  const { isLoading, error, data, updateValue } = useCachedPromise<
+    DeviceSession[]
+  >("devices", fetchDevices);
   const [modalDevice, setModalDevice] = useState<DeviceSession | null>(null);
   const removeDeviceDisclosure = useDisclosure();
-
-  useEffect(() => {
-    (async () => {
-      await fetchDevices();
-
-      setIsFetchLoading(false);
-    })();
-  }, []);
 
   const handleDeviceRemove = (device: DeviceSession) => {
     setModalDevice(device);
     removeDeviceDisclosure.onOpen();
   };
 
-  const fetchDevices = async () => {
-    try {
-      const result = await CognitoInstance.getSessions();
-
-      const sortedResult = result.sort(
-        (
-          { isCurrentSession: aIsCurrentSession },
-          { isCurrentSession: bIsCurrentSession }
-        ) => (aIsCurrentSession && !bIsCurrentSession ? -1 : 1)
-      );
-
-      setDevices(sortedResult);
-    } catch (error) {
-      console.error(error);
-    }
-  };
-
   const removeDevice = (device: DeviceSession) => {
     setModalDevice(null);
-    const newResult = devices.filter(
+    const newResult = data.filter(
       ({ deviceKey }) => deviceKey !== device.deviceKey
     );
-    setDevices(newResult);
+    updateValue(newResult);
   };
 
-  if (isFetchLoading) {
+  if (isLoading) {
     return (
       <Flex pb="4" height="32" justifyContent="center" alignItems="center">
         <Spinner color="brand.600" />
@@ -58,7 +48,7 @@ export default function DeviceList() {
     );
   }
 
-  if (!devices.length) {
+  if (!data?.length || error) {
     return (
       <Flex
         pb="4"
@@ -79,11 +69,11 @@ export default function DeviceList() {
   return (
     <>
       <Flex w="full" flexDirection="column">
-        {devices.map((device, index) => (
+        {data.map((device, index) => (
           <DeviceItem
             key={device.deviceKey}
             device={device}
-            showBottomBorder={index !== devices.length - 1}
+            showBottomBorder={index !== data.length - 1}
             onRemoveDevice={() => handleDeviceRemove(device)}
           />
         ))}

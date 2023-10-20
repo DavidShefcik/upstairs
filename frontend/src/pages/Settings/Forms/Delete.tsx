@@ -32,7 +32,7 @@ export default function SettingsAccountDeleteForm() {
             permanent
           </Text>
           . Your posts, comments, and profile will be deleted and you will not
-          be able to log in. You will be able to re-create another account with
+          be able to log in. You will be able to create another account with
           your email address.
         </Text>
       </SettingsBox>

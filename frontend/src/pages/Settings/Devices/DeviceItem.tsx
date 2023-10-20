@@ -100,7 +100,7 @@ export default function DeviceItem({
             display="inline"
             verticalAlign="middle"
           >
-            First Used: {format(firstSeen, DATE_FORMAT)}
+            First Used: {format(new Date(firstSeen), DATE_FORMAT)}
           </Text>
           <Text
             fontSize="xs"
@@ -109,7 +109,7 @@ export default function DeviceItem({
             display="inline"
             verticalAlign="middle"
           >
-            Last Used: {format(lastUsed, DATE_FORMAT)}
+            Last Used: {format(new Date(lastUsed), DATE_FORMAT)}
           </Text>
         </Flex>
       </Flex>
@@ -149,7 +149,7 @@ export default function DeviceItem({
             display="flex"
             alignItems="center"
           >
-            First Used: {format(firstSeen, DATE_FORMAT)}
+            First Used: {format(new Date(firstSeen), DATE_FORMAT)}
           </Text>
           <Text
             textAlign="center"
@@ -166,7 +166,7 @@ export default function DeviceItem({
             display="flex"
             alignItems="center"
           >
-            Last Used: {format(lastUsed, DATE_FORMAT)}
+            Last Used: {format(new Date(lastUsed), DATE_FORMAT)}
           </Text>
         </Flex>
         <Flex w="full" flexDirection="row" gap="2">
