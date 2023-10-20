@@ -4,7 +4,7 @@ import { WarningIcon } from "@chakra-ui/icons";
 
 import { CognitoInstance, DeviceSession } from "../../../utils/Cognito";
 import DeviceItem from "./DeviceItem";
-import RemoveDeviceModal from "./RemoveDeviceModal";
+import RemoveDeviceModal from "../../../components/Modals/RemoveDeviceModal";
 
 export default function DeviceList() {
   const [isFetchLoading, setIsFetchLoading] = useState(true);

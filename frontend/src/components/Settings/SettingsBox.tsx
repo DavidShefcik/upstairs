@@ -15,6 +15,8 @@ type Props = BaseProps &
         isLoading: boolean;
         onSubmit(event: FormEvent<HTMLFormElement>): void;
         onReset(): void;
+        submitButtonColorScheme?: string;
+        submitButtonText?: string;
       }
     | {
         showFooter?: false;
@@ -78,13 +80,14 @@ export default function SettingsBox({ title, children, ...props }: Props) {
             </Button>
             <Button
               size="md"
-              colorScheme="brand"
-              w="20"
+              colorScheme={props.submitButtonColorScheme ?? "brand"}
+              minW="20"
+              w="auto"
               isLoading={props.isLoading}
-              title="Save"
+              title={props.submitButtonText ?? "Save"}
               type="submit"
             >
-              Save
+              {props.submitButtonText ?? "Save"}
             </Button>
           </Flex>
         )}

@@ -12,9 +12,9 @@ import {
 } from "@chakra-ui/react";
 import { useContext, useState } from "react";
 
-import { AuthenticationStateContext } from "../../../context/AuthenticationState";
+import { AuthenticationStateContext } from "../../context/AuthenticationState";
 import { useNavigate } from "react-router-dom";
-import { CognitoInstance, DeviceSession } from "../../../utils/Cognito";
+import { CognitoInstance, DeviceSession } from "../../utils/Cognito";
 
 export default function RemoveDeviceModal({
   device,

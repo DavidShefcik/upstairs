@@ -422,6 +422,18 @@ class CognitoService {
     });
   }
 
+  public async deleteUser(): Promise<boolean> {
+    return new Promise<boolean>((resolve, reject) => {
+      this._userInstance.deleteUser((error) => {
+        if (error) {
+          reject(error);
+        }
+
+        resolve(true);
+      });
+    });
+  }
+
   private async getCurrentDeviceId(): Promise<string> {
     if (this._currentDeviceId) {
       return this._currentDeviceId;

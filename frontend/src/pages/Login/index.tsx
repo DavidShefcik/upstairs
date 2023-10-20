@@ -52,6 +52,11 @@ const INFO_BOX_VALUES: FromInfoBoxValues = {
     subtitle: "Please log in to get started",
     variant: "info",
   },
+  "/settings/account#delete": {
+    title: "Account Deleted",
+    subtitle: "Your account has been successfully deleted",
+    variant: "info",
+  },
 };
 
 export default function LoginPage() {
@@ -100,8 +105,6 @@ export default function LoginPage() {
 
       userFields = result.user;
     } catch (error) {
-      console.log(error);
-
       switch (error.name) {
         case "UserNotFoundException":
           errors.email = "User not found";
