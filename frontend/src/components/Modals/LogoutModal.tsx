@@ -59,6 +59,7 @@ export default function LogoutModal(props: ReturnType<typeof useDisclosure>) {
             colorScheme="red"
             onClick={handleSubmit}
             isLoading={isLoading}
+            title="Logout"
           >
             Logout
           </Button>

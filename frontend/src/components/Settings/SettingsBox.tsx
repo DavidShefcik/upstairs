@@ -4,21 +4,24 @@ import { Button, Flex, Text } from "@chakra-ui/react";
 import ContentBox from "../ContentBox";
 import { useDeviceSize } from "../../hooks/useDeviceSize";
 
-interface Props {
+interface BaseProps {
   title: string;
-  isLoading: boolean;
   children: ReactNode;
-  onSubmit(event: FormEvent<HTMLFormElement>): void;
-  onReset(): void;
 }
+type Props = BaseProps &
+  (
+    | {
+        showFooter: true;
+        isLoading: boolean;
+        onSubmit(event: FormEvent<HTMLFormElement>): void;
+        onReset(): void;
+      }
+    | {
+        showFooter?: false;
+      }
+  );
 
-export default function SettingsBox({
-  title,
-  isLoading,
-  children,
-  onSubmit,
-  onReset,
-}: Props) {
+export default function SettingsBox({ title, children, ...props }: Props) {
   const { isMobile } = useDeviceSize();
 
   return (
@@ -29,7 +32,7 @@ export default function SettingsBox({
         justifyContent="flex-start"
         alignItems="center"
         px="4"
-        mb="3"
+        mb={props.showFooter ? "3" : "0"}
         borderBottomWidth="thin"
         borderBottomColor="gray.100"
       >
@@ -37,7 +40,11 @@ export default function SettingsBox({
           {title}
         </Text>
       </Flex>
-      <form onSubmit={onSubmit}>
+      <form
+        onSubmit={(event) =>
+          props.showFooter ? props.onSubmit(event) : event.preventDefault()
+        }
+      >
         <Flex
           px={isMobile ? "4" : "5"}
           minH="10"
@@ -46,39 +53,41 @@ export default function SettingsBox({
         >
           {children}
         </Flex>
-        <Flex
-          w="full"
-          h="14"
-          px="3"
-          justifyContent="flex-end"
-          alignItems="center"
-          backgroundColor="gray.100"
-          borderTopWidth="thin"
-          borderColor="gray.200"
-          gap="8"
-        >
-          <Button
-            variant="link"
-            fontSize="sm"
-            color="gray.800"
-            isDisabled={isLoading}
-            type="submit"
-            title="Cancel"
-            onClick={onReset}
+        {props.showFooter && (
+          <Flex
+            w="full"
+            h="14"
+            px="3"
+            justifyContent="flex-end"
+            alignItems="center"
+            backgroundColor="gray.100"
+            borderTopWidth="thin"
+            borderColor="gray.200"
+            gap="8"
           >
-            Cancel
-          </Button>
-          <Button
-            size="md"
-            colorScheme="brand"
-            w="20"
-            isLoading={isLoading}
-            title="Save"
-            type="submit"
-          >
-            Save
-          </Button>
-        </Flex>
+            <Button
+              variant="link"
+              fontSize="sm"
+              color="gray.800"
+              isDisabled={props.isLoading}
+              type="submit"
+              title="Cancel"
+              onClick={props.onReset}
+            >
+              Cancel
+            </Button>
+            <Button
+              size="md"
+              colorScheme="brand"
+              w="20"
+              isLoading={props.isLoading}
+              title="Save"
+              type="submit"
+            >
+              Save
+            </Button>
+          </Flex>
+        )}
       </form>
     </ContentBox>
   );

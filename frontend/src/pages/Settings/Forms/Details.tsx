@@ -84,6 +84,7 @@ export default function SettingsAccountDetailsForm() {
       isLoading={form.isSubmitting}
       onSubmit={form.handleSubmit}
       onReset={handleReset}
+      showFooter
     >
       <Flex w="full" gap="4" pb="5" flexDirection="column">
         <Flex w="full" flexDirection={isMobile ? "column" : "row"} gap="4">

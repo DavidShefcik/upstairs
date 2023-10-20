@@ -94,6 +94,7 @@ export default function SettingsPasswordForm() {
       isLoading={form.isSubmitting}
       onSubmit={form.handleSubmit}
       onReset={handleReset}
+      showFooter
     >
       <Flex w="full" gap="4" pb="5" flexDirection="column">
         <FormControl isInvalid={!!form.errors.currentPassword}>

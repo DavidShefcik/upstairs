@@ -6,6 +6,8 @@ import {
   CognitoUserSession,
   ICognitoUserAttributeData,
 } from "amazon-cognito-identity-js";
+import MobileDetect from "mobile-detect";
+
 import { UnauthenticatedException } from "../exceptions/auth/UnauthenticatedException";
 
 export interface ExposedUserFields {
@@ -40,11 +42,29 @@ type RegisterPayload = {
   password: string;
 };
 
+export enum SessionDeviceType {
+  PHONE = "phone",
+  TABLET = "tablet",
+  DESKTOP = "desktop",
+}
+
+export interface DeviceSession {
+  deviceKey: string;
+  deviceStatus: string;
+  deviceUserAgent: string;
+  lastIPUsed: string;
+  firstSeen: Date;
+  lastUsed: Date;
+  deviceType: SessionDeviceType;
+  isCurrentSession: boolean;
+}
+
 class CognitoService {
   private _userPoolId: string;
   private _clientId: string;
   private _userPool: CognitoUserPool;
   private _userInstance: CognitoUser;
+  private _currentDeviceId: string;
 
   constructor({
     userPoolId,
@@ -364,19 +384,103 @@ class CognitoService {
     }
 
     return new Promise<MutableUserFields>((resolve, reject) => {
-      this._userInstance.updateAttributes(
-        updatedUserFields,
-        (error, result) => {
-          if (error) {
-            reject(error);
-          }
-
-          console.log("update", { result });
-
-          resolve(values);
+      this._userInstance.updateAttributes(updatedUserFields, (error) => {
+        if (error) {
+          reject(error);
         }
-      );
+
+        resolve(values);
+      });
     });
+  }
+
+  public async getSessions(): Promise<DeviceSession[]> {
+    const currentDeviceId = await this.getCurrentDeviceId();
+
+    return new Promise((resolve, reject) => {
+      this._userInstance.listDevices(60, null, {
+        onSuccess: (data) => {
+          const result = data.Devices.map((device) =>
+            this.convertAWSDevice(device, currentDeviceId)
+          );
+
+          resolve(result);
+        },
+        onFailure: reject,
+      });
+    });
+  }
+
+  public async revokeSession(deviceId: string): Promise<boolean> {
+    return new Promise<boolean>((resolve, reject) => {
+      this._userInstance.forgetSpecificDevice(deviceId, {
+        onSuccess: () => {
+          resolve(true);
+        },
+        onFailure: reject,
+      });
+    });
+  }
+
+  private async getCurrentDeviceId(): Promise<string> {
+    if (this._currentDeviceId) {
+      return this._currentDeviceId;
+    }
+
+    this._userInstance.getCachedDeviceKeyAndPassword();
+
+    return new Promise<string>((resolve, reject) => {
+      this._userInstance.getDevice({
+        onFailure: reject,
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        onSuccess: (device: any) => {
+          resolve(device.Device.DeviceKey);
+        },
+      });
+    });
+  }
+
+  private convertAWSDevice(
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    data: Record<string, any>,
+    currentDeviceId: string
+  ): DeviceSession {
+    const {
+      DeviceAttributes,
+      DeviceCreateDate,
+      DeviceKey,
+      DeviceLastAuthenticatedDate,
+    } = data;
+
+    const deviceAttributesMap = new Map<string, string>();
+
+    (DeviceAttributes as Array<Record<string, string>>).forEach(
+      ({ Name, Value }) => deviceAttributesMap.set(Name, Value)
+    );
+
+    const mobileDetectUtil = new MobileDetect(
+      deviceAttributesMap.get("device_name")
+    );
+
+    let deviceType: SessionDeviceType = SessionDeviceType.DESKTOP;
+    if (mobileDetectUtil.phone()) {
+      deviceType = SessionDeviceType.PHONE;
+    } else if (mobileDetectUtil.tablet()) {
+      deviceType = SessionDeviceType.PHONE;
+    }
+
+    const result: DeviceSession = {
+      deviceKey: DeviceKey,
+      firstSeen: new Date(DeviceCreateDate * 1000),
+      lastUsed: new Date(DeviceLastAuthenticatedDate * 1000),
+      lastIPUsed: deviceAttributesMap.get("last_ip_used"),
+      deviceUserAgent: deviceAttributesMap.get("device_name"),
+      deviceStatus: deviceAttributesMap.get("device_status"),
+      deviceType,
+      isCurrentSession: currentDeviceId === DeviceKey,
+    };
+
+    return result;
   }
 }
 
