@@ -21,26 +21,36 @@ const SETTINGS_LINKS: ILinkMenuLink[] = [
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 export default function SettingsLayout() {
-  const { isMobile, isDesktop, isUltrawide } = useDeviceSize();
+  const { isMobile, isLaptop, isDesktop, isUltrawide } = useDeviceSize();
 
-  let margin = "4";
+  let contentWidth = "full";
+  let marginRight = "4";
+  if (isLaptop) {
+    contentWidth = "90%";
+    marginRight = "5%";
+  }
   if (isDesktop) {
-    margin = "32";
+    contentWidth = "75%";
+    marginRight = "-10%";
+    marginRight = "-5%";
   }
   if (isUltrawide) {
-    margin = "48";
+    contentWidth = "60%";
+    marginRight = "-30%";
   }
 
   return (
     <Flex
-      w="full"
+      w={contentWidth}
       flexDirection={isMobile ? "column" : "row"}
-      mx={margin}
       py="4"
       gap={isMobile ? "2" : "6"}
+      alignItems={isMobile ? "center" : "flex-start"}
+      ml={isMobile ? "4" : "0"}
+      mr={marginRight}
     >
       <LinkMenu items={SETTINGS_LINKS} />
-      <Box py="1" flex="1">
+      <Box py="1" w={contentWidth}>
         <Outlet />
       </Box>
     </Flex>
