@@ -15,6 +15,7 @@ import { useSession } from "./context/AuthenticationState";
 import AuthenticatedRoute from "./components/AuthenticatedRoute";
 import UnauthenticatedRoute from "./components/UnauthenticatedRoute";
 import AccountSettings from "./pages/Settings/Account";
+import SecuritySettings from "./pages/Settings/Security";
 import DeviceSettings from "./pages/Settings/Devices";
 import SettingsLayout from "./pages/Settings/SettingsLayout";
 import MainLayout from "./layouts/MainLayout";
@@ -60,6 +61,7 @@ export default function Navigation() {
               Component={() => <Navigate to="/settings/account" replace />}
             />
             <Route path="account" Component={AccountSettings} />
+            <Route path="security" Component={SecuritySettings} />
             <Route path="devices" Component={DeviceSettings} />
           </Route>
         </Route>

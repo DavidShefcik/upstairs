@@ -1,6 +1,6 @@
 import { Box, Flex } from "@chakra-ui/react";
 import { Outlet } from "react-router-dom";
-import { MdDevices } from "react-icons/md";
+import { MdDevices, MdSecurity } from "react-icons/md";
 import { BsPersonFill } from "react-icons/bs";
 import LinkMenu from "../../components/LinkMenu";
 import { ILinkMenuLink } from "../../components/LinkMenu/types";
@@ -11,6 +11,11 @@ const SETTINGS_LINKS: ILinkMenuLink[] = [
     title: "Account",
     path: "/settings/account",
     icon: BsPersonFill,
+  },
+  {
+    title: "Security",
+    path: "/settings/security",
+    icon: MdSecurity,
   },
   {
     title: "Devices",
