@@ -434,6 +434,24 @@ class CognitoService {
     });
   }
 
+  public async generateEnableMFAToken(): Promise<string> {
+    return new Promise<string>((resolve, reject) => {
+      this._userInstance.associateSoftwareToken({
+        onFailure: reject,
+        associateSecretCode: (code) => resolve(code),
+      });
+    });
+  }
+
+  public async enableMFA(temporaryPassword: string): Promise<boolean> {
+    return new Promise<boolean>((resolve, reject) => {
+      this._userInstance.verifySoftwareToken(temporaryPassword, "", {
+        onFailure: reject,
+        onSuccess: () => resolve(true),
+      });
+    });
+  }
+
   private async getCurrentDeviceId(): Promise<string> {
     if (this._currentDeviceId) {
       return this._currentDeviceId;

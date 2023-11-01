@@ -1,0 +1,7 @@
+.control-dots {
+  margin: 0 !important;
+  height: auto !important;
+  display: flex !important;
+  justify-content: center !important;
+  align-items: center !important;
+}

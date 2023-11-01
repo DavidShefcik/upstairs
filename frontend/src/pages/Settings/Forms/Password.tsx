@@ -101,6 +101,7 @@ export default function SettingsPasswordForm() {
           <FormLabel>Current Password</FormLabel>
           <Input
             {...form.getFieldProps("currentPassword")}
+            type="password"
             autoComplete="current-password"
           />
           <FormErrorMessage>{form.errors.currentPassword}</FormErrorMessage>
@@ -109,6 +110,7 @@ export default function SettingsPasswordForm() {
           <FormLabel>New Password</FormLabel>
           <Input
             {...form.getFieldProps("newPassword")}
+            type="password"
             autoComplete="new-password"
           />
           <FormErrorMessage>{form.errors.newPassword}</FormErrorMessage>
@@ -117,6 +119,7 @@ export default function SettingsPasswordForm() {
           <FormLabel>Confirm New Password</FormLabel>
           <Input
             {...form.getFieldProps("confirmNewPassword")}
+            type="password"
             autoComplete="new-password"
           />
           <FormErrorMessage>{form.errors.confirmNewPassword}</FormErrorMessage>
