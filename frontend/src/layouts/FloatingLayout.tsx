@@ -4,19 +4,25 @@ import { useSession } from "../context/AuthenticationState";
 import { ReactNode } from "react";
 
 interface Props {
-  requireAuthentication?: boolean;
+  redirectAuthenticated?: boolean;
   children?: ReactNode;
+  showHeader?: boolean;
 }
 
-export default function UnauthenticatedLayout({
-  requireAuthentication = true,
+export default function FloatingLayout({
+  redirectAuthenticated = true,
   children,
+  showHeader = true,
 }: Props) {
   const { session } = useSession();
 
-  if (requireAuthentication && session.isLoggedIn) {
+  if (redirectAuthenticated && session.isLoggedIn) {
     return <Navigate to="/feed" />;
   }
 
-  return <BrandedFloatBox>{children ?? <Outlet />}</BrandedFloatBox>;
+  return (
+    <BrandedFloatBox showHeader={showHeader}>
+      {children ?? <Outlet />}
+    </BrandedFloatBox>
+  );
 }

@@ -7,9 +7,14 @@ import Footer from "./Footer";
 interface Props {
   children: ReactNode;
   boxStyles?: BoxProps;
+  showHeader?: boolean;
 }
 
-export default function BrandedFloatBox({ children, boxStyles }: Props) {
+export default function BrandedFloatBox({
+  children,
+  boxStyles,
+  showHeader = true,
+}: Props) {
   const { isMobile } = useDeviceSize();
 
   useEffect(() => {
@@ -25,17 +30,19 @@ export default function BrandedFloatBox({ children, boxStyles }: Props) {
       backgroundColor="brand.600"
       alignItems="flex-start"
     >
-      <Text
-        p="4"
-        fontSize="xl"
-        fontWeight="bold"
-        fontStyle="italic"
-        title="Upstairs"
-        color="gray.50"
-        height="16"
-      >
-        Upstairs
-      </Text>
+      {showHeader && (
+        <Text
+          p="4"
+          fontSize="xl"
+          fontWeight="bold"
+          fontStyle="italic"
+          title="Upstairs"
+          color="gray.50"
+          height="16"
+        >
+          Upstairs
+        </Text>
+      )}
       <Flex
         flexDirection="column"
         flexGrow={1}

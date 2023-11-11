@@ -1,7 +1,7 @@
 import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 
 import AuthenticatedLayout from "./layouts/AuthenticatedLayout";
-import UnauthenticatedLayout from "./layouts/UnauthenticatedLayout";
+import FloatingLayout from "./layouts/FloatingLayout";
 import FeedPage from "./pages/Feed";
 import LoginPage from "./pages/Login";
 import LoginVerifyPage from "./pages/Login/Verify";
@@ -12,7 +12,6 @@ import TermsPage from "./pages/Terms";
 import UnauthenticatedCatchPage from "./pages/UnauthenticatedCatch";
 import AuthenticatedCatchPage from "./pages/AuthenticatedCatch";
 import { useSession } from "./context/AuthenticationState";
-import AuthenticatedRoute from "./components/AuthenticatedRoute";
 import UnauthenticatedRoute from "./components/UnauthenticatedRoute";
 import AccountSettings from "./pages/Settings/Account";
 import SecuritySettings from "./pages/Settings/Security";
@@ -20,6 +19,10 @@ import DeviceSettings from "./pages/Settings/Devices";
 import SettingsLayout from "./pages/Settings/SettingsLayout";
 import MainLayout from "./layouts/MainLayout";
 import NotificationsPage from "./pages/Notifications";
+import NeighborhoodRoute from "./components/NeighborhoodRoute";
+import NoNeighborhoodRoute from "./components/NoNeighborhoodRoute";
+import AuthenticatedRoute from "./components/AuthenticatedRoute";
+import AddressPage from "./pages/Neighborhood/Find/Address";
 
 export default function Navigation() {
   const { session } = useSession();
@@ -29,9 +32,7 @@ export default function Navigation() {
       <Routes>
         <Route
           path="/"
-          Component={
-            session.isLoggedIn ? AuthenticatedLayout : UnauthenticatedLayout
-          }
+          Component={session.isLoggedIn ? AuthenticatedLayout : FloatingLayout}
         >
           <Route
             index
@@ -50,12 +51,14 @@ export default function Navigation() {
             Component={ForgotPasswordChangePage}
           />
         </Route>
-        <Route element={<AuthenticatedRoute />}>
+        <Route element={<NeighborhoodRoute />}>
           <Route Component={MainLayout}>
             <Route path="/feed" Component={FeedPage} />
             <Route path="/notifications" Component={NotificationsPage} />
           </Route>
-          <Route path="/settings" Component={SettingsLayout}>
+        </Route>
+        <Route path="/settings" element={<AuthenticatedRoute />}>
+          <Route Component={SettingsLayout}>
             <Route
               index
               Component={() => <Navigate to="/settings/account" replace />}
@@ -65,19 +68,20 @@ export default function Navigation() {
             <Route path="devices" Component={DeviceSettings} />
           </Route>
         </Route>
+        <Route path="/neighborhood" element={<AuthenticatedRoute />}>
+          <Route path="find" element={<NoNeighborhoodRoute />}>
+            <Route path="address" Component={AddressPage} />
+          </Route>
+        </Route>
         <Route
           path="/terms"
-          Component={() => (
-            <UnauthenticatedLayout requireAuthentication={false} />
-          )}
+          Component={() => <FloatingLayout redirectAuthenticated={false} />}
         >
           <Route index Component={TermsPage} />
         </Route>
         <Route
           path="*"
-          Component={
-            session.isLoggedIn ? AuthenticatedLayout : UnauthenticatedLayout
-          }
+          Component={session.isLoggedIn ? AuthenticatedLayout : FloatingLayout}
         >
           <Route
             path="*"

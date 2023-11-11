@@ -129,11 +129,7 @@ class CognitoService {
           reject("invalid-user");
         }
 
-        resolve({
-          ...userFields,
-          // FIXME: Remove this
-          neighborhoodId: "test",
-        });
+        resolve(userFields);
       });
     });
   }

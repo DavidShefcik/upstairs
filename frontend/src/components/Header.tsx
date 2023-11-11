@@ -8,6 +8,7 @@ import MobileMenu from "./MobileMenu";
 import SearchMobileMenu from "./SearchMobileMenu";
 import { useSession } from "../context/AuthenticationState";
 import SearchInput from "./SearchInput";
+import useHomeRoute from "../hooks/useHomeRoute";
 
 export default function Header() {
   const navigate = useNavigate();
@@ -15,6 +16,7 @@ export default function Header() {
   const mobileMenuDisclosure = useDisclosure();
   const searchMobileMenuDisclosure = useDisclosure();
   const { session } = useSession();
+  const homeRoute = useHomeRoute();
 
   const openMobileDrawer = () => {
     mobileMenuDisclosure.onOpen();
@@ -67,7 +69,7 @@ export default function Header() {
             fontSize="xl"
             fontWeight="bold"
             fontStyle="italic"
-            onClick={() => navigate("/feed")}
+            onClick={() => navigate(homeRoute)}
             title="Upstairs"
             color="gray.50"
           >

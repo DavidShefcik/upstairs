@@ -20,6 +20,7 @@ import { Navigate, useLocation, useNavigate } from "react-router-dom";
 import SessionPage from "../../components/SessionPage";
 import PinInputField from "../../components/PinInputField";
 import { LoginState } from ".";
+import useHomeRoute from "../../hooks/useHomeRoute";
 
 interface ForgotPasswordFormFields {
   code: string;
@@ -33,6 +34,7 @@ export default function LoginVerify() {
   const location = useLocation();
   const navigate = useNavigate();
   const locationState = location.state as LocationState;
+  const homeRoute = useHomeRoute();
 
   const validate = (
     values: ForgotPasswordFormFields
@@ -52,7 +54,7 @@ export default function LoginVerify() {
   ) => {
     formikHelpers.setSubmitting(false);
 
-    navigate(locationState?.from ?? "/feed");
+    navigate(locationState?.from ?? homeRoute);
   };
 
   if (!locationState?.email) {
